@@ -7,6 +7,8 @@ letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
 actions = ['UP', 'Left', 'Down', 'Right', 'Restart', 'Exit']
 actions_dict = dict(zip(letter_codes, actions*2))
 
+# 获取用户的输入
+
 
 def get_user_action(keyboard):
     char = 'N'
@@ -14,15 +16,20 @@ def get_user_action(keyboard):
         char = keyboard.getch()
     return actions_dict[char]
 
+# 转置矩阵
+
 
 def transpose(field):
     return [list(row) for row in zip(*field)]
 
 
+# 矩阵逆转
+
 def invert(field):
     return [row[::-1] for row in field]
 
 
+# 创建棋盘
 class GameField(object):
     def __init__(self, height=4, width=4, win=2048):
         self.height = height    # 宽
@@ -36,14 +43,14 @@ class GameField(object):
         if self.score > self.highScore:
             self.highScore = self.score
         self.score = 0
-        self.field = [0 for i in range(self.width) for j in range(self.height)]
+        self.field = [[0 for i in range(self.width)] for j in range(self.height)]
         self.spawn()
         self.spawn()
 
     # 棋盘操作随机生成一个2或者4
     def spawn(self):
         new_element = 4 if randrange(100) > 89 else 2
-        (i, j) = choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
+        (i,j) = choice([(i,j) for i in range(self.width) for j in range(self.height) if self.field[i][j] == 0])
         self.field[i][j] = new_element
 
     def move_is_possible(self, direction):
@@ -125,8 +132,8 @@ class GameField(object):
         def draw_hor_separator():
             line = '+' + ('+-----' * self.width + '+')[1:]
             separator = defaultdict(lambda: line)
-            if not hasattr(draw_hor_separator(), "counter"):
-                draw_hor_separator().counter = 0
+            if not hasattr(draw_hor_separator, "counter"):
+                draw_hor_separator.counter = 0
             cast(separator[draw_hor_separator.counter])
             draw_hor_separator.counter += 1
 

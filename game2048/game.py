@@ -4,7 +4,7 @@ from random import randrange, choice
 from collections import defaultdict
 
 letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
-actions = ['UP', 'Left', 'Down', 'Right', 'Restart', 'Exit']
+actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
 actions_dict = dict(zip(letter_codes, actions*2))
 
 # 获取用户的输入
@@ -67,7 +67,7 @@ class GameField(object):
 
         check['Left'] = lambda field: any(row_is_left_movable(row) for row in field)
         check['Right'] = lambda field: check['Left'](invert(field))
-        check['Up'] = lambda field: check['left'](transpose(field))
+        check['Up'] = lambda field: check['Left'](transpose(field))
         check['Down'] = lambda field: check['Right'](transpose(field))
 
         if direction in check:
@@ -130,7 +130,7 @@ class GameField(object):
 
         # 绘制水平分割线
         def draw_hor_separator():
-            line = '+' + ('+-----' * self.width + '+')[1:]
+            line = '+' + ('+------' * self.width + '+')[1:]
             separator = defaultdict(lambda: line)
             if not hasattr(draw_hor_separator, "counter"):
                 draw_hor_separator.counter = 0
@@ -199,7 +199,7 @@ def main(stdscr):
 
     }
     curses.use_default_colors()
-    game_field = GameField(win=32)
+    game_field = GameField()
     state = 'Init'
     # 状态机开始循环
     while state != 'Exit':

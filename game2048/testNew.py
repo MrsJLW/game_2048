@@ -2,4 +2,3 @@
 from random import randrange, choice
 
 
-field =

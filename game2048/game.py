@@ -29,12 +29,12 @@ class GameField(object):
         self.width = width      # 高
         self.win_value = win    # 过关分数
         self.score = 0          # 当前分数
-        self.hightcore = 0      # 最高分
+        self.highScore = 0      # 最高分
         self.reset()            # 棋盘重置
 
     def reset(self):
-        if self.score > self.hightcore:
-            self.hightcore = self.score
+        if self.score > self.highScore:
+            self.highScore = self.score
         self.score = 0
         self.field = [0 for i in range(self.width) for j in range(self.height)]
         self.spawn()
@@ -116,7 +116,7 @@ class GameField(object):
         help_string1 = '(W)UP (S)Down (A)Left (D)Right'
         help_string2 = '      (R)Restart (Q)Exit'
         gameover_string = '        GAME OVER!'
-        win_stirng = '          YOU WIN!'
+        win_string = '          YOU WIN!'
 
         def cast(string):
             screen.addstr(string + '\n')
@@ -134,8 +134,8 @@ class GameField(object):
             cast(''.join('|{: ^5} '.format(num) if num >0 else '|     ' for num in row) + '|')
         screen.clear()
         cast('SCORE:' + str(self.score))
-        if 0 !=self.hightcore:
-            cast('HIGHSCORE: ' + str(self.hightcore))
+        if 0 !=self.highScore:
+            cast('HIGHSCORE: ' + str(self.highScore))
 
         for row in self.field:
             draw_hor_separator()
@@ -143,7 +143,7 @@ class GameField(object):
         draw_hor_separator()
 
         if self.is_win():
-            cast(win_stirng)
+            cast(win_string)
         else:
             if self.is_gameover():
                 cast(gameover_string)
@@ -151,12 +151,13 @@ class GameField(object):
                 cast(help_string1)
         cast(help_string2)
 
-def main(stdscr):
 
+def main(stdscr):
     def init():
         # 重置游戏棋盘
         game_field.reset()
         return 'Game'
+
     def not_game(state):
 
         # 画出 GameOver 或者 Win 的界面
@@ -193,7 +194,7 @@ def main(stdscr):
     curses.use_default_colors()
     game_field = GameField(win=32)
     state = 'Init'
-    #状态机开始循环
+    # 状态机开始循环
     while state != 'Exit':
         state = state_actions[state]()
 
